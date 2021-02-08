@@ -43,7 +43,7 @@ jobs:
       run: docker build -t secret-agent-tester --target=tester .
 
     - name: Test
-      run: docker run -i --rm -v ${GITHUB_WORKSPACE}:/root/go/src/github.com/ForgeRock/secret-agent secret-agent-tester make citest
+      run: docker run -i --rm -v ${GITHUB_WORKSPACE}:/root/go/src/github.com/jrcast/secret-agent secret-agent-tester make citest
 
   build:
     name: Release
@@ -76,7 +76,7 @@ jobs:
     - name: Kustomize Build
       run: |
         cd config/manager
-        kustomize edit set image controller=forgerock/secret-agent:${TAG_NAME}
+        kustomize edit set image controller=jrcast/secret-agent:${TAG_NAME}
         cd ../../
         kustomize build config/default > secret-agent.yaml
         kustomize build config/ha > secret-agent-ha.yaml
@@ -89,7 +89,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GIT_COMMIT: ${{ github.sha }} 
-        IMAGE_NAME: "forgerock/secret-agent"
+        IMAGE_NAME: "jrcast/secret-agent"
   
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
@@ -97,6 +97,3 @@ jobs:
         name: artifacts
         path: dist/*.tar.gz
     
-    - name: Register pkg with pkg.go.dev
-      run: |
-        curl https://proxy.golang.org/github.com/forgerock/secret-agent/@v/${TAG_NAME}.info
