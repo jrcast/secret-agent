@@ -77,7 +77,7 @@ jobs:
         cd ../../
         kustomize build config/default > secret-agent.yaml
         kustomize build config/ha > secret-agent-ha.yaml
-        git checkout -- kustomization.yaml
+        git checkout -- config/manager/kustomization.yaml
 
     - name: Create Release
       uses: goreleaser/goreleaser-action@v2
